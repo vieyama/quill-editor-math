@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Editor from './components/Editor'
+import './styles.module.css'
 
 interface Props {
   initialValue: string

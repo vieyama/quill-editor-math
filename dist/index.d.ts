@@ -1,3 +1,4 @@
+import './styles.module.css';
 interface Props {
     initialValue: string;
 }
