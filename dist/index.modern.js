@@ -116,5 +116,5 @@ var QuillEditor$1 = function QuillEditor(_ref) {
   });
 };
 
-export { QuillEditor$1 as QuillEditor };
+export default QuillEditor$1;
 //# sourceMappingURL=index.modern.js.map

@@ -120,5 +120,5 @@ var QuillEditor$1 = function QuillEditor(_ref) {
   });
 };
 
-exports.QuillEditor = QuillEditor$1;
+module.exports = QuillEditor$1;
 //# sourceMappingURL=index.js.map
