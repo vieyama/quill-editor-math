@@ -1,5 +1,6 @@
 import React from 'react'
 import QuillEditor from './QuillEditor'
+import './styles.css'
 
 export interface IEditor {
   initialValue: string
