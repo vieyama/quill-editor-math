@@ -5,6 +5,8 @@ interface Props {
   initialValue: string
 }
 
-export const QuillEditor = ({ initialValue }: Props) => {
+const QuillEditor = ({ initialValue }: Props) => {
   return <Editor initialValue={initialValue} />
 }
+
+export default QuillEditor
