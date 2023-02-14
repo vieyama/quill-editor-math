@@ -1,6 +1,6 @@
 {
-  "short_name": "quill-editor-math",
-  "name": "quill-editor-math",
+  "short_name": "quill-math",
+  "name": "quill-math",
   "icons": [
     {
       "src": "favicon.ico",
