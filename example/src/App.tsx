@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { ExampleComponent } from 'quill-math'
-import 'quill-math/dist/index.css'
+import { QuillEditor } from 'quill-math'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <QuillEditor initialValue='Create React Library Example 😄' />
 }
 
 export default App

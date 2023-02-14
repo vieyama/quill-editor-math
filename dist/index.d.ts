@@ -1,5 +1,5 @@
 interface Props {
-    text: string;
+    initialValue: string;
 }
-export declare const ExampleComponent: ({ text }: Props) => JSX.Element;
+export declare const QuillEditor: ({ initialValue }: Props) => JSX.Element;
 export {};

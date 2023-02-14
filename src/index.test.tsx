@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { QuillEditor } from '.'
 
-describe('ExampleComponent', () => {
+describe('QuillEditor', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(QuillEditor).toBeTruthy()
   })
 })
