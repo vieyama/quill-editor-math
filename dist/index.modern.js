@@ -3,10 +3,6 @@ import $ from 'jquery';
 import katex from 'katex';
 import ReactQuill, { Quill } from 'react-quill';
 import ImageResize from 'quill-image-resize-module-react';
-import 'katex/dist/katex.min.css';
-import '@edtr-io/mathquill/build/mathquill.css';
-import 'mathquill4quill/mathquill4quill.css';
-import 'react-quill/dist/quill.snow.css';
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);

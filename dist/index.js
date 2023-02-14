@@ -7,10 +7,6 @@ var katex = _interopDefault(require('katex'));
 var ReactQuill = require('react-quill');
 var ReactQuill__default = _interopDefault(ReactQuill);
 var ImageResize = _interopDefault(require('quill-image-resize-module-react'));
-require('katex/dist/katex.min.css');
-require('@edtr-io/mathquill/build/mathquill.css');
-require('mathquill4quill/mathquill4quill.css');
-require('react-quill/dist/quill.snow.css');
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
