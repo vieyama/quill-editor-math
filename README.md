@@ -4,6 +4,9 @@
 
 [![NPM](https://img.shields.io/npm/v/quill-math.svg)](https://www.npmjs.com/package/quill-math) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+## Demo
+[Stackblitz](https://stackblitz.com/edit/nextjs-n3gfsg?file=pages/index.js)
+
 ## Install
 
 ```bash
@@ -53,6 +56,18 @@ export default function Example() {
 }
 
 ```
+
+## API
+| Property       | Description                                                                                             | Type                                        | Default                                     |
+|----------------|---------------------------------------------------------------------------------------------------------|---------------------------------------------|---------------------------------------------|
+| initialValue   | the initial value to be inserted into the text editor                                                   | String                                      | ""                                          |
+| onChange       | Callback when user input                                                                                | function(value, delta, source, editor)      | false                                       |
+| onBlur         | Called when leaving the component                                                                       | function(previousSelection, source, editor) | false                                       |
+| placeholder    | The placeholder of input                                                                                | String                                      | -                                           |
+| style          | HTML CSS style                                                                                          | React.CSSProperties                         | -                                           |
+| theme          | Quill Editor themes                                                                                     | String - "bubble \| snow"                   | "snow"                                      |
+| customOperator | Operator that will appear in the equation, you can write latex formula.                                 | array                                       | [['\\pm', '\\pm'], ['\\sqrt{x}', '\\sqrt']] |
+| toolbar        | Quill Toolbar Options, you can read more here: https://quilljs.com/docs/modules/toolbar/#toolbar-module | array                                       | -                                           |
 
 ## License
 

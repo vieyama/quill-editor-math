@@ -35,6 +35,7 @@ if (typeof window !== 'undefined') {
   require('@edtr-io/mathquill/build/mathquill.js');
 }
 ReactQuill.Quill.register('modules/imageResize', ImageResize);
+var customOperator = [['\\pm', '\\pm'], ['\\sqrt{x}', '\\sqrt'], ['\\sqrt[3]{x}', '\\sqrt[3]{}'], ['\\sqrt[n]{x}', '\\nthroot'], ['\\frac{x}{y}', '\\frac'], ['\\sum^{s}_{x}{d}', '\\sum'], ['\\prod^{s}_{x}{d}', '\\prod'], ['\\coprod^{s}_{x}{d}', '\\coprod'], ['\\int^{s}_{x}{d}', '\\int'], ['\\binom{n}{k}', '\\binom']];
 var QuillEditor = /*#__PURE__*/function (_React$Component) {
   _inheritsLoose(QuillEditor, _React$Component);
   function QuillEditor(props) {
@@ -66,32 +67,33 @@ var QuillEditor = /*#__PURE__*/function (_React$Component) {
       katex: katex
     });
     enableMathQuillFormulaAuthoring(this.reactQuill.current.editor, {
-      operators: [['\\pm', '\\pm'], ['\\sqrt{x}', '\\sqrt'], ['\\sqrt[3]{x}', '\\sqrt[3]{}'], ['\\sqrt[n]{x}', '\\nthroot'], ['\\frac{x}{y}', '\\frac'], ['\\sum^{s}_{x}{d}', '\\sum'], ['\\prod^{s}_{x}{d}', '\\prod'], ['\\coprod^{s}_{x}{d}', '\\coprod'], ['\\int^{s}_{x}{d}', '\\int'], ['\\binom{n}{k}', '\\binom']],
+      operators: this.props.customOperator || customOperator,
       displayHistory: true
     });
   };
   _proto.render = function render() {
+    var defaultToolbar = [['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{
+      list: 'ordered'
+    }, {
+      list: 'bullet'
+    }], [{
+      script: 'sub'
+    }, {
+      script: 'super'
+    }], [{
+      header: [1, 2, 3, false]
+    }], ['link', 'image', 'formula'], [{
+      color: []
+    }, {
+      background: []
+    }], [{
+      align: []
+    }], ['clean']];
     return React__default.createElement(ReactQuill__default, {
       ref: this.reactQuill,
       modules: {
         formula: true,
-        toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{
-          list: 'ordered'
-        }, {
-          list: 'bullet'
-        }], [{
-          script: 'sub'
-        }, {
-          script: 'super'
-        }], [{
-          header: [1, 2, 3, false]
-        }], ['link', 'image', 'formula'], [{
-          color: []
-        }, {
-          background: []
-        }], [{
-          align: []
-        }], ['clean']],
+        toolbar: this.props.toolbar || defaultToolbar,
         clipboard: {
           matchVisual: false
         },
@@ -101,8 +103,11 @@ var QuillEditor = /*#__PURE__*/function (_React$Component) {
         }
       },
       value: this.state.editorHtml,
-      theme: 'snow',
-      placeholder: 'Compose an epic ...',
+      style: this.state.style,
+      onChange: this.props.onChange,
+      onBlur: this.props.onBlur,
+      theme: this.props.theme || 'snow',
+      placeholder: this.props.placeholder || 'Write something..',
       bounds: '.quill'
     });
   };

@@ -17,6 +17,18 @@ if (typeof window !== 'undefined') {
 
 Quill.register('modules/imageResize', ImageResize)
 
+const customOperator = [
+  ['\\pm', '\\pm'],
+  ['\\sqrt{x}', '\\sqrt'],
+  ['\\sqrt[3]{x}', '\\sqrt[3]{}'],
+  ['\\sqrt[n]{x}', '\\nthroot'],
+  ['\\frac{x}{y}', '\\frac'],
+  ['\\sum^{s}_{x}{d}', '\\sum'],
+  ['\\prod^{s}_{x}{d}', '\\prod'],
+  ['\\coprod^{s}_{x}{d}', '\\coprod'],
+  ['\\int^{s}_{x}{d}', '\\int'],
+  ['\\binom{n}{k}', '\\binom']
+]
 class QuillEditor extends React.Component {
   constructor(props: {} | Readonly<{}>) {
     super(props)
@@ -50,23 +62,29 @@ class QuillEditor extends React.Component {
     const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
     // @ts-ignore
     enableMathQuillFormulaAuthoring(this.reactQuill.current.editor, {
-      operators: [
-        ['\\pm', '\\pm'],
-        ['\\sqrt{x}', '\\sqrt'],
-        ['\\sqrt[3]{x}', '\\sqrt[3]{}'],
-        ['\\sqrt[n]{x}', '\\nthroot'],
-        ['\\frac{x}{y}', '\\frac'],
-        ['\\sum^{s}_{x}{d}', '\\sum'],
-        ['\\prod^{s}_{x}{d}', '\\prod'],
-        ['\\coprod^{s}_{x}{d}', '\\coprod'],
-        ['\\int^{s}_{x}{d}', '\\int'],
-        ['\\binom{n}{k}', '\\binom']
-      ],
+      // @ts-ignore
+      operators: this.props.customOperator || customOperator,
       displayHistory: true
     })
   }
 
   render() {
+    const defaultToolbar = [
+      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+      ['blockquote', 'code-block'],
+
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+      [{ header: [1, 2, 3, false] }],
+
+      ['link', 'image', 'formula'],
+
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ align: [] }],
+
+      ['clean'] // remove formatting button
+    ]
+
     return (
       // @ts-ignore
       <ReactQuill
@@ -74,21 +92,8 @@ class QuillEditor extends React.Component {
         ref={this.reactQuill}
         modules={{
           formula: true,
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-            ['blockquote', 'code-block'],
-
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-            [{ header: [1, 2, 3, false] }],
-
-            ['link', 'image', 'formula'],
-
-            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-            [{ align: [] }],
-
-            ['clean'] // remove formatting button
-          ],
+          // @ts-ignore
+          toolbar: this.props.toolbar || defaultToolbar,
           clipboard: {
             // toggle to add extra line breaks when pasting HTML:
             matchVisual: false
@@ -100,8 +105,16 @@ class QuillEditor extends React.Component {
         }}
         // @ts-ignore
         value={this.state.editorHtml}
-        theme='snow'
-        placeholder='Compose an epic ...'
+        // @ts-ignore
+        style={this.state.style}
+        // @ts-ignore
+        onChange={this.props.onChange}
+        // @ts-ignore
+        onBlur={this.props.onBlur}
+        // @ts-ignore
+        theme={this.props.theme || 'snow'}
+        // @ts-ignore
+        placeholder={this.props.placeholder || 'Write something..'}
         bounds='.quill'
       />
     )
