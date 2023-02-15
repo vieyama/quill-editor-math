@@ -30,6 +30,7 @@ export interface IEditor {
   customOperator?: []
   toolbar?: []
 }
+
 const Editor: React.FC<IEditor> = (props) => {
   return <QuillEditor {...props} />
 }

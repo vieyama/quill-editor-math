@@ -1,6 +1,5 @@
+import * as React from 'react';
+import type { IEditor } from './components/Editor';
 import './styles.module.css';
-interface Props {
-    initialValue: string;
-}
-declare const QuillEditor: ({ initialValue }: Props) => JSX.Element;
+declare const QuillEditor: React.FC<IEditor>;
 export default QuillEditor;

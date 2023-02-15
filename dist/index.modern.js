@@ -114,11 +114,8 @@ var Editor = function Editor(props) {
   return React__default.createElement(QuillEditor, Object.assign({}, props));
 };
 
-var QuillEditor$1 = function QuillEditor(_ref) {
-  var initialValue = _ref.initialValue;
-  return createElement(Editor, {
-    initialValue: initialValue
-  });
+var QuillEditor$1 = function QuillEditor(props) {
+  return createElement(Editor, Object.assign({}, props));
 };
 
 export default QuillEditor$1;
