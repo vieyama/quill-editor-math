@@ -44,7 +44,12 @@ class QuillEditor extends React.Component {
   }
 
   componentDidMount() {
-    this.attachQuillRefs()
+    // @ts-ignore
+    if (!this.didAttachQuillRefs) {
+      this.attachQuillRefs()
+      // @ts-ignore
+      this.didAttachQuillRefs = true
+    }
   }
 
   componentDidUpdate(prevProps: { initialValue: string }) {

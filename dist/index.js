@@ -52,7 +52,10 @@ var QuillEditor = /*#__PURE__*/function (_React$Component) {
   }
   var _proto = QuillEditor.prototype;
   _proto.componentDidMount = function componentDidMount() {
-    this.attachQuillRefs();
+    if (!this.didAttachQuillRefs) {
+      this.attachQuillRefs();
+      this.didAttachQuillRefs = true;
+    }
   };
   _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
     if (prevProps.initialValue === '') {
