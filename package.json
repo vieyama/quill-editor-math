@@ -1,6 +1,6 @@
 {
   "name": "quill-editor-math",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "React Quill with math formula",
   "author": "vieyama",
   "license": "MIT",
@@ -64,7 +64,7 @@
     "jquery": "3.6.1",
     "katex": "0.16.2",
     "mathquill4quill": "^2.4.0",
-    "quill-image-resize-module-react": "^3.0.0",
+    "quill-blot-formatter": "^1.0.5",
     "react-quill": "^2.0.0"
   },
   "files": [

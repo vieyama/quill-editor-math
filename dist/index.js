@@ -6,26 +6,7 @@ var $ = _interopDefault(require('jquery'));
 var katex = _interopDefault(require('katex'));
 var ReactQuill = require('react-quill');
 var ReactQuill__default = _interopDefault(ReactQuill);
-var ImageResize = _interopDefault(require('quill-image-resize-module-react'));
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  _setPrototypeOf(subClass, superClass);
-}
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-  return _setPrototypeOf(o, p);
-}
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-  return self;
-}
+var BlotFormatter = _interopDefault(require('quill-blot-formatter'));
 
 var mathquill4quill;
 if (typeof window !== 'undefined') {
@@ -34,95 +15,75 @@ if (typeof window !== 'undefined') {
   mathquill4quill = require('mathquill4quill');
   require('@edtr-io/mathquill/build/mathquill.js');
 }
-ReactQuill.Quill.register('modules/imageResize', ImageResize);
+ReactQuill.Quill.register('modules/blotFormatter', BlotFormatter);
 var customOperator = [['\\pm', '\\pm'], ['\\sqrt{x}', '\\sqrt'], ['\\sqrt[3]{x}', '\\sqrt[3]{}'], ['\\sqrt[n]{x}', '\\nthroot'], ['\\frac{x}{y}', '\\frac'], ['\\sum^{s}_{x}{d}', '\\sum'], ['\\prod^{s}_{x}{d}', '\\prod'], ['\\coprod^{s}_{x}{d}', '\\coprod'], ['\\int^{s}_{x}{d}', '\\int'], ['\\binom{n}{k}', '\\binom']];
-var QuillEditor = /*#__PURE__*/function (_React$Component) {
-  _inheritsLoose(QuillEditor, _React$Component);
-  function QuillEditor(props) {
-    var _this;
-    _this = _React$Component.call(this, props) || this;
-    _this.reactQuill = React__default.createRef();
-    _this.state = {
-      editorHtml: _this.props.initialValue,
-      theme: 'snow',
-      placeholder: 'Write something...'
-    };
-    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
-    _this.attachQuillRefs = _this.attachQuillRefs.bind(_assertThisInitialized(_this));
-    return _this;
-  }
-  var _proto = QuillEditor.prototype;
-  _proto.handleChange = function handleChange(html) {
-    this.setState({
-      editorHtml: html
-    });
-    this.props.onChange && this.props.onChange(html);
-  };
-  _proto.componentDidMount = function componentDidMount() {
-    if (!this.didAttachQuillRefs) {
-      this.attachQuillRefs();
-      this.didAttachQuillRefs = true;
-    }
-  };
-  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
-    if (prevProps.initialValue === '') {
-      this.setState({
-        editorHtml: this.props.initialValue
+var QuillEditor = function QuillEditor(props) {
+  var defaultToolbar = [['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{
+    list: 'ordered'
+  }, {
+    list: 'bullet'
+  }], [{
+    script: 'sub'
+  }, {
+    script: 'super'
+  }], [{
+    header: [1, 2, 3, false]
+  }], ['link', 'image', 'formula'], [{
+    color: []
+  }, {
+    background: []
+  }], [{
+    align: []
+  }], ['clean']];
+  var reactQuill = React.useRef(null);
+  var _useState = React.useState(''),
+    editorHtml = _useState[0],
+    setEditorHtml = _useState[1];
+  var didAttachQuillRefs = false;
+  var attachQuillRefs = function attachQuillRefs() {
+    if (!didAttachQuillRefs) {
+      console.log('jalan');
+      var enableMathQuillFormulaAuthoring = mathquill4quill({
+        Quill: ReactQuill.Quill,
+        katex: katex
       });
+      enableMathQuillFormulaAuthoring(reactQuill === null || reactQuill === void 0 ? void 0 : reactQuill.current.editor, {
+        operators: props.customOperator || customOperator,
+        displayHistory: true
+      });
+      didAttachQuillRefs = true;
     }
   };
-  _proto.attachQuillRefs = function attachQuillRefs() {
-    var enableMathQuillFormulaAuthoring = mathquill4quill({
-      Quill: ReactQuill.Quill,
-      katex: katex
-    });
-    enableMathQuillFormulaAuthoring(this.reactQuill.current.editor, {
-      operators: this.props.customOperator || customOperator,
-      displayHistory: true
-    });
+  React.useEffect(function () {
+    attachQuillRefs();
+  }, []);
+  React.useEffect(function () {
+    if (props.initialValue) {
+      setEditorHtml(props.initialValue);
+    }
+  }, [props.initialValue]);
+  var handleChange = function handleChange(value) {
+    setEditorHtml(value);
+    props.onChange && props.onChange(value);
   };
-  _proto.render = function render() {
-    var defaultToolbar = [['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{
-      list: 'ordered'
-    }, {
-      list: 'bullet'
-    }], [{
-      script: 'sub'
-    }, {
-      script: 'super'
-    }], [{
-      header: [1, 2, 3, false]
-    }], ['link', 'image', 'formula'], [{
-      color: []
-    }, {
-      background: []
-    }], [{
-      align: []
-    }], ['clean']];
-    return React__default.createElement(ReactQuill__default, {
-      ref: this.reactQuill,
-      modules: {
-        formula: true,
-        toolbar: this.props.toolbar || defaultToolbar,
-        clipboard: {
-          matchVisual: false
-        },
-        imageResize: {
-          parchment: ReactQuill.Quill["import"]('parchment'),
-          modules: ['Resize', 'DisplaySize']
-        }
+  return React__default.createElement(ReactQuill__default, {
+    ref: reactQuill,
+    modules: {
+      formula: true,
+      toolbar: props.toolbar || defaultToolbar,
+      clipboard: {
+        matchVisual: false
       },
-      value: this.state.editorHtml,
-      style: this.state.style,
-      onChange: this.handleChange,
-      onBlur: this.props.onBlur,
-      theme: this.props.theme || 'snow',
-      placeholder: this.props.placeholder || 'Write something..',
-      bounds: '.quill'
-    });
-  };
-  return QuillEditor;
-}(React__default.Component);
+      blotFormatter: {}
+    },
+    value: editorHtml,
+    onChange: handleChange,
+    onBlur: props.onBlur,
+    theme: props.theme || 'snow',
+    placeholder: props.placeholder || 'Write something..',
+    bounds: '.quill'
+  });
+};
 
 var Editor = function Editor(props) {
   return React__default.createElement(QuillEditor, Object.assign({}, props));

@@ -1,9 +1,9 @@
 import $ from 'jquery'
 import katex from 'katex'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
-// @ts-ignore
-import ImageResize from 'quill-image-resize-module-react'
+import BlotFormatter from 'quill-blot-formatter'
+import { IEditor } from '../interface'
 
 let mathquill4quill: (arg0: { Quill: typeof Quill; katex: any }) => any
 if (typeof window !== 'undefined') {
@@ -15,7 +15,7 @@ if (typeof window !== 'undefined') {
   require('@edtr-io/mathquill/build/mathquill.js')
 }
 
-Quill.register('modules/imageResize', ImageResize)
+Quill.register('modules/blotFormatter', BlotFormatter)
 
 const customOperator = [
   ['\\pm', '\\pm'],
@@ -29,108 +29,77 @@ const customOperator = [
   ['\\int^{s}_{x}{d}', '\\int'],
   ['\\binom{n}{k}', '\\binom']
 ]
-class QuillEditor extends React.Component {
-  constructor(props: {} | Readonly<{}>) {
-    super(props)
-    // @ts-ignore
-    this.reactQuill = React.createRef()
-    this.state = {
+
+const QuillEditor = (props: IEditor) => {
+  const defaultToolbar = [
+    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+    ['blockquote', 'code-block'],
+
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+    [{ header: [1, 2, 3, false] }],
+
+    ['link', 'image', 'formula'],
+
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ align: [] }],
+
+    ['clean'] // remove formatting button
+  ]
+
+  const reactQuill = useRef(null)
+
+  const [editorHtml, setEditorHtml] = useState('')
+  let didAttachQuillRefs = false
+  const attachQuillRefs = () => {
+    if (!didAttachQuillRefs) {
+      console.log('jalan')
+      const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
       // @ts-ignore
-      editorHtml: this.props.initialValue,
-      theme: 'snow',
-      placeholder: 'Write something...'
-    }
-    this.handleChange = this.handleChange.bind(this)
-    this.attachQuillRefs = this.attachQuillRefs.bind(this)
-  }
-
-  handleChange(html: string) {
-    this.setState({ editorHtml: html })
-    // @ts-ignore
-    this.props.onChange && this.props.onChange(html)
-  }
-
-  componentDidMount() {
-    // @ts-ignore
-    if (!this.didAttachQuillRefs) {
-      this.attachQuillRefs()
-      // @ts-ignore
-      this.didAttachQuillRefs = true
-    }
-  }
-
-  componentDidUpdate(prevProps: { initialValue: string }) {
-    // do something
-    if (prevProps.initialValue === '') {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        // @ts-ignore
-        editorHtml: this.props.initialValue
+      enableMathQuillFormulaAuthoring(reactQuill?.current.editor, {
+        operators: props.customOperator || customOperator,
+        displayHistory: true
       })
+      didAttachQuillRefs = true
     }
   }
 
-  attachQuillRefs() {
-    const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
-    // @ts-ignore
-    enableMathQuillFormulaAuthoring(this.reactQuill.current.editor, {
-      // @ts-ignore
-      operators: this.props.customOperator || customOperator,
-      displayHistory: true
-    })
+  useEffect(() => {
+    attachQuillRefs()
+  }, [])
+
+  useEffect(() => {
+    if (props.initialValue) {
+      setEditorHtml(props.initialValue)
+    }
+  }, [props.initialValue])
+
+  const handleChange = (value: string) => {
+    setEditorHtml(value)
+    props.onChange && props.onChange(value)
   }
 
-  render() {
-    const defaultToolbar = [
-      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      ['blockquote', 'code-block'],
-
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-      [{ header: [1, 2, 3, false] }],
-
-      ['link', 'image', 'formula'],
-
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      [{ align: [] }],
-
-      ['clean'] // remove formatting button
-    ]
-
-    return (
+  return (
+    <ReactQuill
+      ref={reactQuill}
+      modules={{
+        formula: true,
+        toolbar: props.toolbar || defaultToolbar,
+        clipboard: {
+          // toggle to add extra line breaks when pasting HTML:
+          matchVisual: false
+        },
+        blotFormatter: {}
+      }}
+      value={editorHtml}
+      onChange={handleChange}
       // @ts-ignore
-      <ReactQuill
-        // @ts-ignore
-        ref={this.reactQuill}
-        modules={{
-          formula: true,
-          // @ts-ignore
-          toolbar: this.props.toolbar || defaultToolbar,
-          clipboard: {
-            // toggle to add extra line breaks when pasting HTML:
-            matchVisual: false
-          },
-          imageResize: {
-            parchment: Quill.import('parchment'),
-            modules: ['Resize', 'DisplaySize']
-          }
-        }}
-        // @ts-ignore
-        value={this.state.editorHtml}
-        // @ts-ignore
-        style={this.state.style}
-        // @ts-ignore
-        onChange={this.handleChange}
-        // @ts-ignore
-        onBlur={this.props.onBlur}
-        // @ts-ignore
-        theme={this.props.theme || 'snow'}
-        // @ts-ignore
-        placeholder={this.props.placeholder || 'Write something..'}
-        bounds='.quill'
-      />
-    )
-  }
+      onBlur={props.onBlur}
+      theme={props.theme || 'snow'}
+      placeholder={props.placeholder || 'Write something..'}
+      bounds='.quill'
+    />
+  )
 }
 
 export default QuillEditor
