@@ -13,12 +13,7 @@ interface UnprivilegedEditor {
 }
 export interface IEditor {
   initialValue: string
-  onChange?(
-    value: string,
-    delta: DeltaStatic,
-    source: Sources,
-    editor: UnprivilegedEditor
-  ): void
+  onChange?(value: string): void
   onBlur?(
     previousSelection: Range,
     source: Sources,

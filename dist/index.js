@@ -114,7 +114,7 @@ var QuillEditor = /*#__PURE__*/function (_React$Component) {
       },
       value: this.state.editorHtml,
       style: this.state.style,
-      onChange: this.props.onChange,
+      onChange: this.handleChange,
       onBlur: this.props.onBlur,
       theme: this.props.theme || 'snow',
       placeholder: this.props.placeholder || 'Write something..',

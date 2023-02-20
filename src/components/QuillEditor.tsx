@@ -120,7 +120,7 @@ class QuillEditor extends React.Component {
         // @ts-ignore
         style={this.state.style}
         // @ts-ignore
-        onChange={this.props.onChange}
+        onChange={this.handleChange}
         // @ts-ignore
         onBlur={this.props.onBlur}
         // @ts-ignore
