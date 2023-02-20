@@ -56,7 +56,7 @@ var QuillEditor = /*#__PURE__*/function (_React$Component) {
     this.setState({
       editorHtml: html
     });
-    this.props.onChange(html);
+    this.props.onChange && this.props.onChange(html);
   };
   _proto.componentDidMount = function componentDidMount() {
     if (!this.didAttachQuillRefs) {

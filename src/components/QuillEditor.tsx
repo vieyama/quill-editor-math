@@ -47,7 +47,7 @@ class QuillEditor extends React.Component {
   handleChange(html: string) {
     this.setState({ editorHtml: html })
     // @ts-ignore
-    this.props.onChange(html)
+    this.props.onChange && this.props.onChange(html)
   }
 
   componentDidMount() {
