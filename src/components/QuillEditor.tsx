@@ -40,7 +40,14 @@ class QuillEditor extends React.Component {
       theme: 'snow',
       placeholder: 'Write something...'
     }
+    this.handleChange = this.handleChange.bind(this)
     this.attachQuillRefs = this.attachQuillRefs.bind(this)
+  }
+
+  handleChange(html: string) {
+    this.setState({ editorHtml: html })
+    // @ts-ignore
+    this.props.onChange(html)
   }
 
   componentDidMount() {

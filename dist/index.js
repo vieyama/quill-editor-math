@@ -47,10 +47,17 @@ var QuillEditor = /*#__PURE__*/function (_React$Component) {
       theme: 'snow',
       placeholder: 'Write something...'
     };
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.attachQuillRefs = _this.attachQuillRefs.bind(_assertThisInitialized(_this));
     return _this;
   }
   var _proto = QuillEditor.prototype;
+  _proto.handleChange = function handleChange(html) {
+    this.setState({
+      editorHtml: html
+    });
+    this.props.onChange(html);
+  };
   _proto.componentDidMount = function componentDidMount() {
     if (!this.didAttachQuillRefs) {
       this.attachQuillRefs();
