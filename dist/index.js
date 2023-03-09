@@ -28,6 +28,8 @@ var QuillEditor = function QuillEditor(props) {
     script: 'super'
   }], [{
     header: [1, 2, 3, false]
+  }], [{
+    direction: 'rtl'
   }], ['link', 'image', 'formula'], [{
     color: []
   }, {
@@ -42,7 +44,6 @@ var QuillEditor = function QuillEditor(props) {
   var didAttachQuillRefs = false;
   var attachQuillRefs = function attachQuillRefs() {
     if (!didAttachQuillRefs) {
-      console.log('jalan');
       var enableMathQuillFormulaAuthoring = mathquill4quill({
         Quill: ReactQuill.Quill,
         katex: katex
