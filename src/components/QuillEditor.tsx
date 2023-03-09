@@ -38,7 +38,7 @@ const QuillEditor = (props: IEditor) => {
     [{ list: 'ordered' }, { list: 'bullet' }],
     [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
     [{ header: [1, 2, 3, false] }],
-
+    [{ direction: 'rtl' }],
     ['link', 'image', 'formula'],
 
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
@@ -53,7 +53,6 @@ const QuillEditor = (props: IEditor) => {
   let didAttachQuillRefs = false
   const attachQuillRefs = () => {
     if (!didAttachQuillRefs) {
-      console.log('jalan')
       const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
       // @ts-ignore
       enableMathQuillFormulaAuthoring(reactQuill?.current.editor, {
