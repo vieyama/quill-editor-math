@@ -22,4 +22,5 @@ export interface IEditor {
   theme?: string
   customOperator?: []
   toolbar?: []
+  readOnly?: boolean
 }

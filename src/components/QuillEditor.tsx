@@ -97,6 +97,7 @@ const QuillEditor = (props: IEditor) => {
       theme={props.theme || 'snow'}
       placeholder={props.placeholder || 'Write something..'}
       bounds='.quill'
+      readOnly={props.readOnly}
     />
   )
 }

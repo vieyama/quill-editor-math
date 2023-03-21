@@ -78,7 +78,8 @@ var QuillEditor = function QuillEditor(props) {
     onBlur: props.onBlur,
     theme: props.theme || 'snow',
     placeholder: props.placeholder || 'Write something..',
-    bounds: '.quill'
+    bounds: '.quill',
+    readOnly: props.readOnly
   });
 };
 
