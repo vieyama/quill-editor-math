@@ -50,6 +50,7 @@ const QuillEditor = (props: IEditor) => {
   const reactQuill = useRef(null)
 
   const [editorHtml, setEditorHtml] = useState('')
+
   let didAttachQuillRefs = false
   const attachQuillRefs = () => {
     if (!didAttachQuillRefs) {
@@ -76,6 +77,7 @@ const QuillEditor = (props: IEditor) => {
   useEffect(() => {
     if (props.resetField) {
       setEditorHtml('')
+      props.setResetField && props.setResetField(false)
     }
   }, [props.resetField])
 

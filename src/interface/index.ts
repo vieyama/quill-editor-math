@@ -24,4 +24,5 @@ export interface IEditor {
   toolbar?: []
   readOnly?: boolean
   resetField?: boolean
+  setResetField?: React.Dispatch<React.SetStateAction<boolean>>
 }

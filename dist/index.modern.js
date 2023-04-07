@@ -62,6 +62,7 @@ var QuillEditor = function QuillEditor(props) {
   useEffect(function () {
     if (props.resetField) {
       setEditorHtml('');
+      props.setResetField && props.setResetField(false);
     }
   }, [props.resetField]);
   var handleChange = function handleChange(value) {
