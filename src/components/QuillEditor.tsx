@@ -73,6 +73,12 @@ const QuillEditor = (props: IEditor) => {
     }
   }, [props.initialValue])
 
+  useEffect(() => {
+    if (props.resetField) {
+      setEditorHtml('')
+    }
+  }, [props.resetField])
+
   const handleChange = (value: string) => {
     setEditorHtml(value)
     props.onChange && props.onChange(value)

@@ -23,4 +23,5 @@ export interface IEditor {
   customOperator?: []
   toolbar?: []
   readOnly?: boolean
+  resetField?: boolean
 }

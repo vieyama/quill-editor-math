@@ -1,6 +1,6 @@
 {
   "name": "quill-editor-math",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "React Quill with math formula",
   "author": "vieyama",
   "license": "MIT",

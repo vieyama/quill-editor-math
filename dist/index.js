@@ -63,6 +63,11 @@ var QuillEditor = function QuillEditor(props) {
       setEditorHtml(props.initialValue);
     }
   }, [props.initialValue]);
+  React.useEffect(function () {
+    if (props.resetField) {
+      setEditorHtml('');
+    }
+  }, [props.resetField]);
   var handleChange = function handleChange(value) {
     setEditorHtml(value);
     props.onChange && props.onChange(value);
