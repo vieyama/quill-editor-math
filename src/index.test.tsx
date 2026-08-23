@@ -1,4 +1,4 @@
-import { QuillEditor } from '.'
+import QuillEditor from '.'
 
 describe('QuillEditor', () => {
   it('is truthy', () => {

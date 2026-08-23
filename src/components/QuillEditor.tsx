@@ -5,19 +5,33 @@ import ReactQuill, { Quill } from 'react-quill'
 import BlotFormatter from 'quill-blot-formatter'
 import { IEditor } from '../interface'
 
-let mathquill4quill: (arg0: { Quill: typeof Quill; katex: any }) => any
+declare global {
+  interface Window {
+    katex: typeof katex
+    jQuery: JQueryStatic
+    $: JQueryStatic
+  }
+}
+
+type Mathquill4quill = (arg0: {
+  Quill: typeof Quill
+  katex: typeof katex
+}) => (
+  quill: ReturnType<ReactQuill['getEditor']>,
+  options: { operators: Array<[string, string]>; displayHistory: boolean }
+) => void
+
+let mathquill4quill: Mathquill4quill
 if (typeof window !== 'undefined') {
-  // @ts-ignore
   window.katex = katex
-  // @ts-ignore
   window.jQuery = window.$ = $
-  mathquill4quill = require('mathquill4quill')
+  mathquill4quill = require('mathquill4quill') as Mathquill4quill
   require('@edtr-io/mathquill/build/mathquill.js')
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter)
 
-const customOperator = [
+const customOperator: Array<[string, string]> = [
   ['\\pm', '\\pm'],
   ['\\sqrt{x}', '\\sqrt'],
   ['\\sqrt[3]{x}', '\\sqrt[3]{}'],
@@ -47,7 +61,7 @@ const QuillEditor = (props: IEditor) => {
     ['clean'] // remove formatting button
   ]
 
-  const reactQuill = useRef(null)
+  const reactQuill = useRef<ReactQuill | null>(null)
 
   const [editorHtml, setEditorHtml] = useState('')
 
@@ -55,8 +69,10 @@ const QuillEditor = (props: IEditor) => {
   const attachQuillRefs = () => {
     if (!didAttachQuillRefs) {
       const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
-      // @ts-ignore
-      enableMathQuillFormulaAuthoring(reactQuill?.current.editor, {
+      const editor = reactQuill.current?.getEditor()
+      if (!editor) return
+
+      enableMathQuillFormulaAuthoring(editor, {
         operators: props.customOperator || customOperator,
         displayHistory: true
       })
@@ -100,7 +116,6 @@ const QuillEditor = (props: IEditor) => {
       }}
       value={editorHtml}
       onChange={handleChange}
-      // @ts-ignore
       onBlur={props.onBlur}
       theme={props.theme || 'snow'}
       placeholder={props.placeholder || 'Write something..'}

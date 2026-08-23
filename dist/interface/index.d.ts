@@ -11,12 +11,12 @@ interface UnprivilegedEditor {
 export interface IEditor {
     initialValue: string;
     onChange?: (value: string) => void;
-    onBlur?: (previousSelection: Range, source: Sources, editor: UnprivilegedEditor) => void;
+    onBlur?: (previousSelection: RangeStatic | null, source: Sources, editor: UnprivilegedEditor) => void;
     placeholder?: string;
     style?: React.CSSProperties;
     theme?: string;
-    customOperator?: [];
-    toolbar?: [];
+    customOperator?: Array<[string, string]>;
+    toolbar?: unknown[];
     readOnly?: boolean;
     resetField?: boolean;
     setResetField?: React.Dispatch<React.SetStateAction<boolean>>;

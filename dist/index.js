@@ -44,11 +44,14 @@ var QuillEditor = function QuillEditor(props) {
   var didAttachQuillRefs = false;
   var attachQuillRefs = function attachQuillRefs() {
     if (!didAttachQuillRefs) {
+      var _reactQuill$current;
       var enableMathQuillFormulaAuthoring = mathquill4quill({
         Quill: ReactQuill.Quill,
         katex: katex
       });
-      enableMathQuillFormulaAuthoring(reactQuill === null || reactQuill === void 0 ? void 0 : reactQuill.current.editor, {
+      var editor = (_reactQuill$current = reactQuill.current) === null || _reactQuill$current === void 0 ? void 0 : _reactQuill$current.getEditor();
+      if (!editor) return;
+      enableMathQuillFormulaAuthoring(editor, {
         operators: props.customOperator || customOperator,
         displayHistory: true
       });

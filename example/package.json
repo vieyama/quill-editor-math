@@ -4,27 +4,28 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
-    "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
-    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+    "start": "node ./node_modules/react-app-rewired/bin/index.js start",
+    "build": "node ./node_modules/react-app-rewired/bin/index.js build",
+    "test": "node ./node_modules/react-app-rewired/bin/index.js test",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "link:../node_modules/@testing-library/jest-dom",
-    "@testing-library/react": "link:../node_modules/@testing-library/react",
-    "@testing-library/user-event": "link:../node_modules/@testing-library/user-event",
-    "@types/jest": "link:../node_modules/@types/jest",
-    "@types/node": "link:../node_modules/@types/node",
-    "@types/react": "link:../node_modules/@types/react",
-    "@types/react-dom": "link:../node_modules/@types/react-dom",
-    "react": "link:../node_modules/react",
-    "react-dom": "link:../node_modules/react-dom",
-    "react-scripts": "link:../node_modules/react-scripts",
-    "typescript": "link:../node_modules/typescript",
-    "quill-math": "link:.."
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^25.2.3",
+    "@types/node": "^12.20.55",
+    "@types/react": "^16.14.70",
+    "@types/react-dom": "^16.9.25",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-scripts": "^5.0.1",
+    "typescript": "^3.9.10",
+    "quill-editor-math": "file:.."
   },
   "devDependencies": {
-    "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
+    "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
+    "react-app-rewired": "^2.2.1"
   },
   "eslintConfig": {
     "extends": "react-app"
