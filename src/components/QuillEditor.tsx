@@ -3,7 +3,7 @@ import katex from 'katex'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
 import BlotFormatter from 'quill-blot-formatter'
-import { IEditor } from '../interface'
+import type { Operator, QuillEditorProps, Toolbar } from '../interface'
 
 declare global {
   interface Window {
@@ -18,10 +18,10 @@ type Mathquill4quill = (arg0: {
   katex: typeof katex
 }) => (
   quill: ReturnType<ReactQuill['getEditor']>,
-  options: { operators: Array<[string, string]>; displayHistory: boolean }
+  options: { operators: Operator[]; displayHistory: boolean }
 ) => void
 
-let mathquill4quill: Mathquill4quill
+let mathquill4quill: Mathquill4quill | undefined
 if (typeof window !== 'undefined') {
   window.katex = katex
   window.jQuery = window.$ = $
@@ -31,7 +31,7 @@ if (typeof window !== 'undefined') {
 
 Quill.register('modules/blotFormatter', BlotFormatter)
 
-const customOperator: Array<[string, string]> = [
+const customOperator: Operator[] = [
   ['\\pm', '\\pm'],
   ['\\sqrt{x}', '\\sqrt'],
   ['\\sqrt[3]{x}', '\\sqrt[3]{}'],
@@ -44,40 +44,49 @@ const customOperator: Array<[string, string]> = [
   ['\\binom{n}{k}', '\\binom']
 ]
 
-const QuillEditor = (props: IEditor) => {
-  const defaultToolbar = [
-    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-    ['blockquote', 'code-block'],
+const defaultToolbar: Toolbar = [
+  ['bold', 'italic', 'underline', 'strike'],
+  ['blockquote', 'code-block'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  [{ script: 'sub' }, { script: 'super' }],
+  [{ header: [1, 2, 3, false] }],
+  [{ direction: 'rtl' }],
+  ['link', 'image', 'formula'],
+  [{ color: [] }, { background: [] }],
+  [{ align: [] }],
+  ['clean']
+]
 
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-    [{ header: [1, 2, 3, false] }],
-    [{ direction: 'rtl' }],
-    ['link', 'image', 'formula'],
-
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-    [{ align: [] }],
-
-    ['clean'] // remove formatting button
-  ]
-
+const QuillEditor: React.FC<QuillEditorProps> = ({
+  customOperator: operators,
+  initialValue,
+  onBlur,
+  onChange,
+  placeholder,
+  readOnly,
+  resetField,
+  setResetField,
+  style,
+  theme,
+  toolbar
+}) => {
   const reactQuill = useRef<ReactQuill | null>(null)
+  const didAttachQuillRefs = useRef(false)
 
-  const [editorHtml, setEditorHtml] = useState('')
+  const [editorHtml, setEditorHtml] = useState(initialValue || '')
 
-  let didAttachQuillRefs = false
   const attachQuillRefs = () => {
-    if (!didAttachQuillRefs) {
-      const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
-      const editor = reactQuill.current?.getEditor()
-      if (!editor) return
+    if (didAttachQuillRefs.current || !mathquill4quill) return
 
-      enableMathQuillFormulaAuthoring(editor, {
-        operators: props.customOperator || customOperator,
-        displayHistory: true
-      })
-      didAttachQuillRefs = true
-    }
+    const editor = reactQuill.current?.getEditor()
+    if (!editor) return
+
+    const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex })
+    enableMathQuillFormulaAuthoring(editor, {
+      operators: operators || customOperator,
+      displayHistory: true
+    })
+    didAttachQuillRefs.current = true
   }
 
   useEffect(() => {
@@ -85,21 +94,21 @@ const QuillEditor = (props: IEditor) => {
   }, [])
 
   useEffect(() => {
-    if (props.initialValue) {
-      setEditorHtml(props.initialValue)
+    if (initialValue !== undefined) {
+      setEditorHtml(initialValue)
     }
-  }, [props.initialValue])
+  }, [initialValue])
 
   useEffect(() => {
-    if (props.resetField) {
+    if (resetField) {
       setEditorHtml('')
-      props.setResetField && props.setResetField(false)
+      setResetField && setResetField(false)
     }
-  }, [props.resetField])
+  }, [resetField, setResetField])
 
   const handleChange = (value: string) => {
     setEditorHtml(value)
-    props.onChange && props.onChange(value)
+    onChange && onChange(value)
   }
 
   return (
@@ -107,20 +116,20 @@ const QuillEditor = (props: IEditor) => {
       ref={reactQuill}
       modules={{
         formula: true,
-        toolbar: props.toolbar || defaultToolbar,
+        toolbar: toolbar || defaultToolbar,
         clipboard: {
-          // toggle to add extra line breaks when pasting HTML:
           matchVisual: false
         },
         blotFormatter: {}
       }}
       value={editorHtml}
       onChange={handleChange}
-      onBlur={props.onBlur}
-      theme={props.theme || 'snow'}
-      placeholder={props.placeholder || 'Write something..'}
+      onBlur={onBlur}
+      theme={theme || 'snow'}
+      placeholder={placeholder || 'Write something..'}
       bounds='.quill'
-      readOnly={props.readOnly}
+      readOnly={readOnly}
+      style={style}
     />
   )
 }

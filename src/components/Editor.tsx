@@ -1,8 +1,8 @@
 import React from 'react'
 import QuillEditor from './QuillEditor'
-import { IEditor } from '../interface'
+import type { QuillEditorProps } from '../interface'
 
-const Editor: React.FC<IEditor> = (props) => {
+const Editor: React.FC<QuillEditorProps> = (props) => {
   return <QuillEditor {...props} />
 }
 

@@ -1,45 +1,24 @@
 {
-  "name": "quill-math-example",
-  "homepage": ".",
+  "name": "quill-editor-math-example",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node ./node_modules/react-app-rewired/bin/index.js start",
-    "build": "node ./node_modules/react-app-rewired/bin/index.js build",
-    "test": "node ./node_modules/react-app-rewired/bin/index.js test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "start": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^25.2.3",
-    "@types/node": "^12.20.55",
-    "@types/react": "^16.14.70",
-    "@types/react-dom": "^16.9.25",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-scripts": "^5.0.1",
-    "typescript": "^3.9.10",
-    "quill-editor-math": "file:.."
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "typescript": "^5.6.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
-    "react-app-rewired": "^2.2.1"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@types/node": "^26.3.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1"
   }
 }

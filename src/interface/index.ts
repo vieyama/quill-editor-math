@@ -1,6 +1,12 @@
+import type React from 'react'
 import { DeltaStatic, RangeStatic, BoundsStatic, Sources } from 'quill'
 
-interface UnprivilegedEditor {
+export type Operator = [string, string]
+export type Theme = 'snow' | 'bubble'
+export type ToolbarItem = string | Record<string, unknown>
+export type Toolbar = Array<ToolbarItem | ToolbarItem[]>
+
+export interface UnprivilegedEditor {
   getLength(): number
   getText(index?: number, length?: number): string
   getHTML(): string
@@ -8,8 +14,9 @@ interface UnprivilegedEditor {
   getSelection(focus?: boolean): RangeStatic
   getContents(index?: number, length?: number): DeltaStatic
 }
-export interface IEditor {
-  initialValue: string
+
+export interface QuillEditorProps {
+  initialValue?: string
   onChange?: (value: string) => void
   onBlur?: (
     previousSelection: RangeStatic | null,
@@ -18,10 +25,12 @@ export interface IEditor {
   ) => void
   placeholder?: string
   style?: React.CSSProperties
-  theme?: string
-  customOperator?: Array<[string, string]>
-  toolbar?: unknown[]
+  theme?: Theme
+  customOperator?: Operator[]
+  toolbar?: Toolbar
   readOnly?: boolean
   resetField?: boolean
   setResetField?: React.Dispatch<React.SetStateAction<boolean>>
 }
+
+export type IEditor = QuillEditorProps
